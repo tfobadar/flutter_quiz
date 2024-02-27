@@ -2,7 +2,6 @@ import 'package:advance_basic/components/answer_button.dart';
 import 'package:advance_basic/components/heading2_text.dart';
 import 'package:advance_basic/data/questions.dart';
 import 'package:advance_basic/pages/start_screen.dart';
-import 'package:advance_basic/pages/thank_you.dart';
 import 'package:flutter/material.dart';
 
 class QuestionScreen extends StatefulWidget {
