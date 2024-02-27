@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Heading2Text extends StatelessWidget {
-  const Heading2Text({Key? key, required this.title, this.textAlignment = TextAlign.left}) : super(key: key);
+  const Heading2Text(
+      {Key? key, required this.title, this.textAlignment = TextAlign.left})
+      : super(key: key);
 
   final String? title;
   final TextAlign textAlignment;
@@ -10,10 +13,8 @@ class Heading2Text extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title.toString(),
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 24,
-      ),
+      style: GoogleFonts.lato(
+          fontSize: 24, color: Colors.white, fontWeight: FontWeight.w900),
       textAlign: textAlignment,
     );
   }

@@ -1,10 +1,15 @@
 import 'package:advance_basic/components/answer_button.dart';
 import 'package:advance_basic/components/heading2_text.dart';
 import 'package:advance_basic/data/questions.dart';
+import 'package:advance_basic/pages/start_screen.dart';
+import 'package:advance_basic/pages/thank_you.dart';
 import 'package:flutter/material.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({Key? key}) : super(key: key);
+  const QuestionScreen({Key? key, required this.onSelectAnswer})
+      : super(key: key);
+
+  final void Function(String answer)? onSelectAnswer;
 
   @override
   _QuestionScreenState createState() => _QuestionScreenState();
@@ -12,12 +17,10 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   var currentQuestionIndex = 0;
-
-  void nextQuestion() {
+  void answerQuestion(String selectAnswer) {
+    widget.onSelectAnswer!(selectAnswer);
     setState(() {
-      if (currentQuestionIndex < 6) {
-        currentQuestionIndex++;
-      }
+      currentQuestionIndex++;
     });
   }
 
@@ -38,7 +41,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ...currentQuestion.getShuffledAnswers().map((item) {
             return AnswerButton(
               answer: item,
-              onTap: nextQuestion,
+              onTap: () {
+                answerQuestion(item);
+              },
             );
           })
         ],
