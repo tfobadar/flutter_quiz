@@ -1,15 +1,16 @@
-import 'package:advance_basic/components/description_text.dart';
 import 'package:advance_basic/components/heading2_text.dart';
+import 'package:advance_basic/components/questions_summary.dart';
 import 'package:advance_basic/data/questions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
-  ResultScreen({Key? key, required this.answers}) : super(key: key);
+  ResultScreen({Key? key, required this.answers, required this.restartQuiz})
+      : super(key: key);
+  final void Function() restartQuiz;
 
   List<String>? answers;
 
-  List<Map<String, Object>> getSummaryData() {
+  List<Map<String, Object>> get getSummaryData {
     final List<Map<String, Object>> summary = [];
 
     for (var i = 0; i < answers!.length; i++) {
@@ -25,52 +26,44 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(answers?.length);
+    final numOfTotalQuestions = questions.length;
+    final numCorrectAnswer = getSummaryData.where((data) {
+      return data['user_answer'] == data['answer'];
+    }).length;
+    print(numCorrectAnswer);
     return SizedBox(
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Heading2Text(
-              title: 'You have given x answers on y questions',
+          Heading2Text(
+              title:
+                  'You answered $numCorrectAnswer out of $numOfTotalQuestions questions corretly!',
               textAlignment: TextAlign.center),
           const SizedBox(
             height: 20,
           ),
-          Expanded(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...getSummaryData().map(
-                (item) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(((item['question_index'] as int)+ 1 ).toString(), style: const TextStyle(color: Colors.white, fontSize: 20,),),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Question - ${item['question']}', style: const TextStyle(color: Colors.white, fontSize: 16,),),
-                          const SizedBox(height: 5,),
-                          Text('Answer - ${item['answer']}', style: const TextStyle(color: Colors.white, fontSize: 16,),),
-                          const SizedBox(height: 5,),
-                          Text('Your Answer - ${item['user_answer']}', style: const TextStyle(color: Colors.white, fontSize: 16,),),
-                          const SizedBox(height: 15,),
-                        ],
-                      ))
-                    ],
-                  );
-                },
-              ).toList()
-            ],
-          )),
-          // ...answers!.map(
-          //   (item) => DescriptionText(
-          //     description: item,
-          //   ),
-          // )
+          QuestionsSummary(getSummaryData),
+          const SizedBox(
+            height: 40,
+          ),
+          Center(
+            child: OutlinedButton.icon(
+              onPressed: restartQuiz,
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(width: 1.0, color: Colors.white),
+              ),
+              icon: const Icon(
+                Icons.replay_outlined,
+                color: Colors.white,
+              ),
+              label: const Text(
+                'Restart Now',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          )
         ],
       ),
     );
